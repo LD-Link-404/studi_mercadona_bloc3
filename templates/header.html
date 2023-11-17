@@ -1,0 +1,12 @@
+{% load static %}
+<header>
+    <a href="{% url 'catalog' %}">
+        <img src="{% static 'images/logo.png'%}" alt="Mercadona Logo for Studi">
+    </a>
+    <div>
+        <form method="GET" action="{% url 'search' %}">
+            <input type="text" name="q" placeholder="Chercher un produit..." value="{{ query }}">
+            <button type="submit"><i class="fas fa-search"></i></button>
+        </form>
+    </div>    
+</header>

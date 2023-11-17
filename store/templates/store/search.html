@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block content %} 
+    {% if query %}
+        <p>Résultats de la recherche pour "{{ query }}":</p>
+    {% endif %}
+    <div>
+        <form method="GET" action="{% url 'search' %}" id="sortForm">
+            <label for="sort">Trier par :</label>
+            <select id="sort" name="sort_by">
+                <option value="" {% if not sort_by %}selected{% endif %} disabled>Trier les produits</option>
+                <option value="name" {% if sort_by == 'name' %}selected{% endif %}>Nom (défaut)</option>
+                <option value="low_to_high" {% if sort_by == 'low_to_high' %}selected{% endif %}>Du - cher au + cher</option>
+                <option value="high_to_low" {% if sort_by == 'high_to_low' %}selected{% endif %}>Du + cher au - cher</option>
+            </select>
+            <input type="hidden" name="query" value="{{ query }}">
+        </form>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            var sortSelect = $('#sort');
+            var sortForm = $('#sortForm');
+    
+            // Récupérer la valeur stockée dans le cookie
+            var selectedSortBy = getCookie('selectedSortBy');
+            if (selectedSortBy) {
+                sortSelect.val(selectedSortBy);
+            }
+    
+            // Récupérer le mot-clé de recherche à partir de l'URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var initialQuery = urlParams.get('q');
+            var initialSortBy = urlParams.get('sort_by');
+    
+            // Définir la valeur par défaut du sélecteur de tri
+            if (initialSortBy) {
+                sortSelect.val(initialSortBy);
+            } else {
+                // Si le paramètre sort_by n'est pas présent, réinitialiser à "trier les produits"
+                sortSelect.val('');
+            }
+    
+            // Ajouter un écouteur d'événement pour le changement de sélection
+            sortSelect.change(function () {
+                // Enregistrer la valeur dans le cookie
+                setCookie('selectedSortBy', sortSelect.val());
+    
+                // Utiliser le mot-clé de recherche initial
+                var query = initialQuery || '';
+                var sortBy = sortSelect.val();
+    
+                // Construire l'URL avec les paramètres
+                var url = "{% url 'search' %}?q=" + encodeURIComponent(query);
+    
+                if (sortBy) {
+                    url += "&sort_by=" + sortBy;
+                }
+    
+                // Rediriger vers la nouvelle URL
+                window.location.href = url;
+            });
+    
+            // Réinitialiser la valeur de tri à vide lors de la soumission du formulaire
+            sortForm.submit(function () {
+                sortSelect.val('');
+            });
+    
+            // Fonctions pour définir et récupérer des cookies
+            function setCookie(name, value) {
+                document.cookie = name + "=" + value + "; path=/";
+            }
+    
+            function getCookie(name) {
+                var match = document.cookie.match(new RegExp(name + '=([^;]+)'));
+                return match ? decodeURIComponent(match[1]) : null;
+            }
+        });
+    </script>
+    
+    <div id="search-results">
+        {% if products %}
+            {% for product in products %}
+                <div>
+                    <h2>{{ product.name }}</h2>
+                    {% if product.thumbnail %}
+                        <img src="{{ product.thumbnail.url }}" alt="{{ product.name }}">
+                    {% else %}
+                        <p>Aucune image disponible</p>
+                    {% endif %}
+                    <a href="{{ product.get_absolute_url }}">Voir l'article</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Aucun produit trouvé.</p>
+        {% endif %}
+    </div>
+{% endblock %}

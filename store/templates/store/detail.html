@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>{{ product.name }}</h2>
+
+    {% if product.discount_percentage %}
+    <h3 style="text-decoration: line-through;">€{{ product.price|floatformat:2 }}</h3>
+    <h3 style="color: red; font-weight: bold;">€{{ product.discount_price|floatformat:2|default:"0.00" }}</h3>
+    <small style="color: red;">-{{ product.discount_percentage }}%</small>
+{% else %}
+    <h3>€{{ product.price|floatformat:2 }}</h3>
+{% endif %}
+
+    {% if product.thumbnail %}
+        <img src="{{ product.thumbnail.url }}" alt="{{ product.name }}">
+    {% else %}
+        <p>Aucune image disponible</p>
+    {% endif %}
+
+    <p>{{ product.description }}</p>
+{% endblock %}
+

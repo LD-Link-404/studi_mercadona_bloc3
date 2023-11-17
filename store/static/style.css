@@ -1,0 +1,77 @@
+/* Reset des marges et des paddings par défaut du navigateur */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: hsla(40, 6%, 90%, .3);
+}
+.site-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Assurez-vous que le contenu occupe au moins la hauteur de la fenêtre */
+}
+/* Style du header */
+header {
+  background-color: #ffffff; /* Couleur de fond du header */
+  padding: 10px;
+  text-align: center;
+  height: 60px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 2px solid #ddd;
+}
+
+header img {
+  float: left;
+  margin-top: 5px;
+  margin-right: 10px;
+}
+
+/* Style de la barre de recherche */
+header form input[type="text"] {
+  margin-top: 15px;
+  width: 600px;
+  padding: 8px;
+  border: 2px solid #ddd;
+  border-radius: 20px;
+}
+
+header form button {
+  padding: 8px 15px;
+  border: none;
+  background-color: #ddd;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+/* Ajoutez une icône de loupe à l'intérieur du bouton */
+header form button i {
+  color: #333;
+}
+
+/* Style du footer */
+footer {
+  background-color: #1C3037;
+  padding: 10px;
+  text-align: center;
+  border-top: 2px solid #ddd;
+  color: white;
+ 
+  bottom: 0;
+  width: 100%;
+  margin-top: auto; /* La marge supérieure automatique pousse le footer vers le bas de la page */
+}
+footer a {
+  color: white;
+  text-decoration: none;
+}
+main {
+  flex-grow: 1;
+  margin-top: 80px; /* Ajoutez une marge en haut du contenu pour éviter qu'il soit caché par le header */
+  margin-left: 25%;
+  margin-right: 25%;
+  border-left: 2px solid #ddd; /* Bordure à gauche pour la marge de droite */
+  border-right: 2px solid #ddd; /* Bordure à droite pour la marge de gauche */
+}
